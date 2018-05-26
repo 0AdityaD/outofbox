@@ -1,0 +1,59 @@
+#! /usr/bin/python3
+
+
+import argparse
+import subprocess
+import re
+
+
+def getVolume():
+    output = subprocess.check_output('pactl list sinks',
+                                     shell=True,
+                                     stderr=subprocess.STDOUT)
+    res = list(filter(lambda x: 'Volume: front' in x,
+               str(output).split('\\n')))[0]
+    return int(re.split(' +', res)[4].strip('%').strip())
+
+
+def up():
+    volume = getVolume()
+    volume = min(100, volume + 5)
+    subprocess.check_output('pactl set-sink-volume 0 {}\%'.format(volume),
+                            shell=True,
+                            stderr=subprocess.STDOUT)
+
+
+def down():
+    volume = getVolume()
+    volume = max(0, volume - 5)
+    subprocess.check_output('pactl set-sink-volume 0 {}\%'.format(volume),
+                            shell=True,
+                            stderr=subprocess.STDOUT)
+
+
+def mute():
+    subprocess.check_output('pactl set-sink-mute 0 toggle',
+                            shell=True,
+                            stderr=subprocess.STDOUT)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('cmd', help='[up] to increase volume '
+                                    '[down] to decrease volume '
+                                    '[mute] to toggle mute'
+                       )
+    parser.add_argument
+    args = parser.parse_args()
+    if args.cmd == 'up':
+        up()
+    elif args.cmd == 'down':
+        down()
+    elif args.cmd == 'mute':
+        mute()
+    else:
+        print('wtf you tryna do bro')
+
+
+if __name__ == '__main__':
+    main()
