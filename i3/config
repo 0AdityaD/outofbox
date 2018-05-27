@@ -36,6 +36,7 @@ bindsym Mod1+semicolon exec dmenu_run
 # bindsym Mod1+d exec --no-startup-id i3-dmenu-desktop
 
 bindsym Mod1+Escape exec lock
+exec xautolock -locker lock -time 1 &
 
 # change focus
 bindsym Mod1+h focus left
@@ -165,7 +166,7 @@ bar {
 #
 # Please remove the following exec line:
 #######################################################################
-exec i3-config-wizard
+
 exec --no-startup-id gnome-settings-daemon
 
 # exec feh --bg-scale ~/Pictures/Geometric.jpg ~/Pictures/Geometric.jpg ~/Pictures/Geometric.jpg
@@ -182,4 +183,3 @@ bindsym XF86AudioMute exec --no-startup-id volume mute
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec light -A 5
 bindsym XF86MonBrightnessDown exec light -U 5
-

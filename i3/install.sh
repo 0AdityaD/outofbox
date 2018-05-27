@@ -10,6 +10,9 @@ sudo make
 sudo make install
 cd ..
 rm -rf light
+sudo apt install xautolock
 
 sudo cp config ~/.config/i3/config
 sudo cp i3status.conf ~/.config/
+sudo cp autolock /etc/init.d/
+sudo chmod +x /etc/init.d/autolock
