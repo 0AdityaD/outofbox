@@ -6,44 +6,47 @@ import subprocess
 import re
 
 
-def getSink():
+def getSinks():
     output = subprocess.check_output('pactl list sinks',
                                      shell=True,
-                                     stderr=subprocess.STDOUT)
-    res = list(filter(lambda x: 'RUNNING' in x,
-               re.split('\n', str(output).replace('\\n\\n', '\n'))))[0]
+                                     stderr=subprocess.STDOUT,
+                                     universal_newlines=True)
     res = list(filter(lambda x: 'Sink #' in x,
-               str(res).split('\\n')))[0]
-    return int(res.strip('Sink #'))
+               re.split('\n', str(output).replace('\\n\\n', '\n'))))
+    res = list(map(lambda x: int(x.strip('Sink #')), res))
+    return res
  
 
 def getVolume():
     output = subprocess.check_output('pactl list sinks',
                                      shell=True,
                                      stderr=subprocess.STDOUT)
-    res = list(filter(lambda x: 'RUNNING' in x,
-               re.split('\n', str(output).replace('\\n\\n', '\n'))))[0]
+    res = re.split('\n', str(output).replace('\\n\\n', '\n'))[0]
     res = list(filter(lambda x: 'Volume: front' in x,
                res.split('\\n')))[0]
     return int(re.split(' +', res)[4].strip('%').strip())
 
 
 def up():
-    sink = getSink()
+    sinks = getSinks()
     volume = getVolume()
     volume = min(100, volume + 5)
-    subprocess.check_output('pactl set-sink-volume {} {}\%'.format(sink, volume),
-                            shell=True,
-                            stderr=subprocess.STDOUT)
+    for sink in sinks:
+        subprocess.check_output(
+                'pactl set-sink-volume {} {}\%'.format(sink, volume),
+                shell=True,
+                stderr=subprocess.STDOUT)
 
 
 def down():
-    sink = getSink()
+    sinks = getSinks()
     volume = getVolume()
     volume = max(0, volume - 5)
-    subprocess.check_output('pactl set-sink-volume {} {}\%'.format(sink, volume),
-                            shell=True,
-                            stderr=subprocess.STDOUT)
+    for sink in sinks:
+        subprocess.check_output(
+                'pactl set-sink-volume {} {}\%'.format(sink, volume),
+                shell=True,
+                stderr=subprocess.STDOUT)
 
 
 def mute():
@@ -56,7 +59,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('cmd', help='[up] to increase volume '
                                     '[down] to decrease volume '
-                                    '[mute] to toggle mute'
+                                    '[mute] to toggle mute '
                                     '[get] to get volume'
                        )
     parser.add_argument
