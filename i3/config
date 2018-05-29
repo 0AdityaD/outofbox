@@ -36,7 +36,7 @@ bindsym Mod1+semicolon exec dmenu_run
 # bindsym Mod1+d exec --no-startup-id i3-dmenu-desktop
 
 bindsym Mod1+Escape exec lock
-exec xautolock -locker lock -time 15 &
+exec xautolock -locker lock -time 10 &
 
 # change focus
 bindsym Mod1+h focus left

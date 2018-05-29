@@ -1,1 +1,0 @@
-xautolock -locker lock -time 15 &
