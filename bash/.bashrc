@@ -116,10 +116,15 @@ if ! shopt -oq posix; then
   fi
 fi
 
+set -o vi
+
 export EDITOR=vim
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/d4aditya/.sdkman"
 [[ -s "/home/d4aditya/.sdkman/bin/sdkman-init.sh" ]] && source "/home/d4aditya/.sdkman/bin/sdkman-init.sh"
+
+eval `opam config env`
+/home/d4aditya/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
 PATH=$PATH:.

@@ -1,0 +1,11 @@
+[user]
+    name = Aditya Durvasula
+    email = d4aditya@gmail.com
+
+[alias]
+    promote = "!git push -u origin `git rev-parse --abbrev-ref HEAD`"
+    upstream = "!f() { if git remote | grep upstream >/dev/null; then git pull --rebase upstream master; else echo 'You have not configured an upstream repository:\n\n git remote add upstream <repository>\n'; fi; }; f"
+    unstash = "!git stash pop"
+
+[push]
+    default = simple

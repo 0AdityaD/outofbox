@@ -18,6 +18,15 @@ alias l='ls -CF'
 alias xclip='xclip -selection c'
 alias gs='git status'
 alias gl='git log'
+alias ga='git add'
+alias ga.='git add .'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gcam='git add . && git commit -m'
+alias gpush='git push'
+alias gpro='git promote'
+alias gup='git upstream'
+alias gnome-control-center='XDG_CURRENT_DESKTOP=GNOME gnome-control-center'
 
 rmd () {
     pandoc $1 | lynx -stdin
