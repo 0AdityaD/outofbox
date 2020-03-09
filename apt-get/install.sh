@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # basic apps
-sudo apt-get install vim python3 pip3 pip git zsh google-chrome-stable firefox tmux terminator texlive-full texstudio blueman spotify haskell-platform
+sudo apt-get install vim git zsh tmux terminator texlive-full texstudio blueman haskell-platform -y
 
 # upgrade stack
 sudo stack upgrade

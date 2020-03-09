@@ -15,6 +15,9 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 
+# auto command
+shopt -s autocd
+
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
@@ -57,9 +60,9 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]'
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w'
 fi
 unset color_prompt force_color_prompt
 
@@ -116,6 +119,24 @@ if ! shopt -oq posix; then
   fi
 fi
 
+parse_git_branch() {
+    git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+export PS1="$PS1\[\033[91m\]\$(parse_git_branch)\[\033[00m\]"
+
+parse_git_status() {
+    if [[ $(git status --porcelain 2>&1 | grep "fatal") ]]; then
+        echo " "
+    elif [[ $(git status --porcelain) ]]; then
+        echo " ✗ "
+    else
+        echo " ✔ "
+    fi
+}
+
+export PS1="$PS1\[\033[93m\]\$(parse_git_status)\[\033[00m\]$ "
+
 set -o vi
 
 export EDITOR=vim
@@ -124,7 +145,10 @@ export EDITOR=vim
 export SDKMAN_DIR="/home/d4aditya/.sdkman"
 [[ -s "/home/d4aditya/.sdkman/bin/sdkman-init.sh" ]] && source "/home/d4aditya/.sdkman/bin/sdkman-init.sh"
 
-eval `opam config env`
-/home/d4aditya/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+# eval `opam config env`
+# /home/d4aditya/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+export MYVIMRC='~/.vimrc'
+export VIMINIT='source $MYVIMRC'
 
 PATH=$PATH:.

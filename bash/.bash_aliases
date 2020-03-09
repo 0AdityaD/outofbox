@@ -1,12 +1,9 @@
 alias python=python3
 alias pip=pip3
 alias pig=pygmentize
-alias python=python3
-alias ipython=ipython3
 alias cd..='cd ..'
 alias utcs='ssh -X d4aditya@linux.cs.utexas.edu'
-alias utcsb='ssh -X d4aditya@don-giovanni.cs.utexas.edu'
-alias c++='g++ -g -O0 -std=c++14'
+alias c++='clang++ -std=c++17 -Wall -Wshadow -O2 -pedantic -fsanitize=undefined,address'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -24,18 +21,30 @@ alias gc='git commit'
 alias gcm='git commit -m'
 alias gcam='git add . && git commit -m'
 alias gpush='git push'
+alias gpull='git pull'
 alias gpro='git promote'
 alias gup='git upstream'
 alias gnome-control-center='XDG_CURRENT_DESKTOP=GNOME gnome-control-center'
+alias grepp='grep -rn'
 
 rmd () {
     pandoc $1 | lynx -stdin
 }
 
+vpnon() {
+    nordvpn c
+    nordvpn s killswitch on
+}
+
+vpnoff() {
+    nordvpn s killswitch off
+    nordvpn d
+}
+
 push () {
     git add .
     git commit -m "$*"
-    git push origin master
+    git push
 }
 
 fpush() {
